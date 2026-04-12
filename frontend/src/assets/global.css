@@ -1,0 +1,40 @@
+:root {
+  --bg-gradient: linear-gradient(140deg, #fef7e8 0%, #e8f2ff 45%, #def7ea 100%);
+  --panel-bg: rgba(255, 255, 255, 0.92);
+  --primary: #1f7ae0;
+  --accent: #2fa56a;
+  --text-main: #1c2733;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Noto Sans SC", "Microsoft YaHei", sans-serif;
+  background: var(--bg-gradient);
+  color: var(--text-main);
+  min-height: 100vh;
+}
+
+a {
+  text-decoration: none;
+}
+
+.page-card {
+  background: var(--panel-bg);
+  border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(27, 66, 122, 0.12);
+  backdrop-filter: blur(2px);
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}

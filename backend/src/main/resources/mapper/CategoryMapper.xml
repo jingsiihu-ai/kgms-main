@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjc.kgms.mapper.CategoryMapper">
+    <select id="selectAll" resultType="com.hjc.kgms.model.entity.KgCategory">
+        SELECT id, parent_id, name, level, sort_order, enabled, created_at, updated_at FROM kg_category ORDER BY level ASC, sort_order ASC, id ASC
+    </select>
+    <select id="selectById" resultType="com.hjc.kgms.model.entity.KgCategory">
+        SELECT id, parent_id, name, level, sort_order, enabled, created_at, updated_at FROM kg_category WHERE id = #{id}
+    </select>
+    <insert id="insert" parameterType="com.hjc.kgms.model.entity.KgCategory" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO kg_category(parent_id, name, level, sort_order, enabled, created_at, updated_at) VALUES (#{parentId}, #{name}, #{level}, #{sortOrder}, #{enabled}, NOW(), NOW())
+    </insert>
+    <update id="update" parameterType="com.hjc.kgms.model.entity.KgCategory">
+        UPDATE kg_category SET parent_id = #{parentId}, name = #{name}, level = #{level}, sort_order = #{sortOrder}, enabled = #{enabled}, updated_at = NOW() WHERE id = #{id}
+    </update>
+    <delete id="deleteById">DELETE FROM kg_category WHERE id = #{id}</delete>
+    <select id="countChildren" resultType="int">SELECT COUNT(1) FROM kg_category WHERE parent_id = #{id}</select>
+    <select id="countResources" resultType="int">SELECT COUNT(1) FROM resources WHERE category_id = #{id}</select>
+</mapper>

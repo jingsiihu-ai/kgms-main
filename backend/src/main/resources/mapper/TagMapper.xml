@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjc.kgms.mapper.TagMapper">
+    <select id="selectAll" resultType="com.hjc.kgms.model.entity.KgTag">
+        SELECT id, name, created_at FROM tags ORDER BY id DESC
+    </select>
+    <select id="selectById" resultType="com.hjc.kgms.model.entity.KgTag">
+        SELECT id, name, created_at FROM tags WHERE id = #{id}
+    </select>
+    <select id="selectByName" resultType="com.hjc.kgms.model.entity.KgTag">
+        SELECT id, name, created_at FROM tags WHERE name = #{name} LIMIT 1
+    </select>
+    <insert id="insert" parameterType="com.hjc.kgms.model.entity.KgTag" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO tags(name, created_at) VALUES (#{name}, NOW())
+    </insert>
+    <update id="update" parameterType="com.hjc.kgms.model.entity.KgTag">
+        UPDATE tags SET name = #{name} WHERE id = #{id}
+    </update>
+    <delete id="deleteById">DELETE FROM tags WHERE id = #{id}</delete>
+    <select id="selectOptionsByResourceId" resultType="com.hjc.kgms.model.vo.SimpleOptionVO">
+        SELECT t.id, t.name FROM resource_tags rt INNER JOIN tags t ON t.id = rt.tag_id WHERE rt.resource_id = #{resourceId} ORDER BY t.id
+    </select>
+    <select id="selectHotTags" resultType="com.hjc.kgms.model.vo.HotTagVO">
+        SELECT t.id AS tag_id, t.name AS tag_name, COUNT(1) AS use_count
+        FROM resource_tags rt INNER JOIN tags t ON t.id = rt.tag_id
+        GROUP BY t.id, t.name ORDER BY use_count DESC, t.id DESC LIMIT #{limit}
+    </select>
+</mapper>

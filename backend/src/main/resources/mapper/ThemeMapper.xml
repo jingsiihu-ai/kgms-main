@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjc.kgms.mapper.ThemeMapper">
+
+    <select id="selectAll" resultType="com.hjc.kgms.model.entity.KgTheme">
+        SELECT id, theme_name, description, created_at, updated_at
+        FROM kg_theme
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultType="com.hjc.kgms.model.entity.KgTheme">
+        SELECT id, theme_name, description, created_at, updated_at
+        FROM kg_theme
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.hjc.kgms.model.entity.KgTheme" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO kg_theme(theme_name, description, created_at, updated_at)
+        VALUES (#{themeName}, #{description}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.hjc.kgms.model.entity.KgTheme">
+        UPDATE kg_theme
+        SET theme_name = #{themeName},
+            description = #{description},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM kg_theme
+        WHERE id = #{id}
+    </delete>
+
+    <select id="selectOptionsByResourceId" resultType="com.hjc.kgms.model.vo.SimpleOptionVO">
+        SELECT t.id, t.theme_name AS name
+        FROM kg_resource_theme rt
+                 INNER JOIN kg_theme t ON t.id = rt.theme_id
+        WHERE rt.resource_id = #{resourceId}
+        ORDER BY t.id
+    </select>
+</mapper>

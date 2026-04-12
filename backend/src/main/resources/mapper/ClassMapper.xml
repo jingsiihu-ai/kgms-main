@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hjc.kgms.mapper.ClassMapper">
+
+    <select id="selectAll" resultType="com.hjc.kgms.model.entity.KgClass">
+        SELECT id, class_name, grade, description, created_at, updated_at
+        FROM kg_class
+        ORDER BY id DESC
+    </select>
+
+    <select id="selectById" resultType="com.hjc.kgms.model.entity.KgClass">
+        SELECT id, class_name, grade, description, created_at, updated_at
+        FROM kg_class
+        WHERE id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="com.hjc.kgms.model.entity.KgClass" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO kg_class(class_name, grade, description, created_at, updated_at)
+        VALUES (#{className}, #{grade}, #{description}, NOW(), NOW())
+    </insert>
+
+    <update id="update" parameterType="com.hjc.kgms.model.entity.KgClass">
+        UPDATE kg_class
+        SET class_name = #{className},
+            grade      = #{grade},
+            description = #{description},
+            updated_at = NOW()
+        WHERE id = #{id}
+    </update>
+
+    <delete id="deleteById">
+        DELETE FROM kg_class
+        WHERE id = #{id}
+    </delete>
+
+    <select id="selectOptionsByResourceId" resultType="com.hjc.kgms.model.vo.SimpleOptionVO">
+        SELECT c.id, c.class_name AS name
+        FROM kg_resource_class rc
+                 INNER JOIN kg_class c ON c.id = rc.class_id
+        WHERE rc.resource_id = #{resourceId}
+        ORDER BY c.id
+    </select>
+</mapper>
